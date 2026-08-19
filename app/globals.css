@@ -1,0 +1,353 @@
+:root {
+  --hud-font: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --accent: #f7d156;
+  --danger: #ff5a5a;
+  --good: #6fe08a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #0a0c10;
+  color: #e8ecf1;
+  font-family: var(--hud-font);
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+.shell {
+  position: fixed;
+  inset: 0;
+  display: block;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+  background: #0a0c10;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------------------------------------------------------------- HUD ---- */
+
+.hud-top-left {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bar {
+  width: 190px;
+  height: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.55);
+  background: rgba(10, 12, 16, 0.55);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.bar > span {
+  display: block;
+  height: 100%;
+  transition: width 0.12s linear;
+}
+
+.bar.health > span {
+  background: linear-gradient(90deg, #4fd167, #9bf0a8);
+}
+
+.bar.armor > span {
+  background: linear-gradient(90deg, #4a92e0, #a8d4ff);
+}
+
+.bar.car > span {
+  background: linear-gradient(90deg, #e0a24a, #ffd9a1);
+}
+
+.hud-top-right {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.money {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--good);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+  letter-spacing: 1px;
+}
+
+.stars {
+  font-size: 24px;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.22);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.stars b {
+  color: #ffd24a;
+  font-weight: 400;
+}
+
+.clock {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.weapon {
+  position: absolute;
+  right: 20px;
+  top: 108px;
+  text-align: right;
+  background: rgba(10, 12, 16, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.weapon strong {
+  display: block;
+  font-size: 15px;
+  color: var(--accent);
+}
+
+.speedo {
+  position: absolute;
+  right: 24px;
+  bottom: 26px;
+  text-align: right;
+}
+
+.speedo .kmh {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.speedo .unit {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.speedo .carname {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 6px;
+}
+
+.mission {
+  position: absolute;
+  top: 96px;
+  left: 18px;
+  max-width: 320px;
+  background: rgba(8, 10, 14, 0.62);
+  border-left: 3px solid var(--accent);
+  padding: 8px 12px;
+  border-radius: 0 4px 4px 0;
+}
+
+.mission h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.mission p {
+  margin: 0;
+  font-size: 13px;
+  color: #dfe5ec;
+}
+
+.mission .timer {
+  margin-top: 4px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.mission .timer.urgent {
+  color: var(--danger);
+}
+
+.messages {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.messages div {
+  font-size: 15px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+}
+
+.messages .good {
+  color: var(--good);
+}
+
+.messages .bad {
+  color: var(--danger);
+}
+
+.hint {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 58px;
+  background: rgba(8, 10, 14, 0.72);
+  border: 1px solid rgba(247, 209, 86, 0.5);
+  color: var(--accent);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.big-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.big-center h2 {
+  font-size: 48px;
+  margin: 0;
+  letter-spacing: 4px;
+  color: var(--danger);
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+}
+
+/* ------------------------------------------------------------- Menus ---- */
+
+.menu {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 40%, rgba(20, 26, 40, 0.9), rgba(4, 6, 10, 0.97));
+  pointer-events: auto;
+}
+
+.menu-card {
+  width: min(680px, 92vw);
+  padding: 28px 34px 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(10, 13, 18, 0.85);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.title {
+  margin: 0;
+  font-size: 46px;
+  letter-spacing: 6px;
+  line-height: 1;
+  color: #ffd24a;
+  text-shadow: 3px 3px 0 #a4292b;
+}
+
+.subtitle {
+  margin: 6px 0 20px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 6px 22px;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: #cfd6de;
+}
+
+.controls kbd {
+  display: inline-block;
+  min-width: 20px;
+  padding: 1px 6px;
+  margin-right: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 210, 74, 0.55);
+  border-radius: 6px;
+  background: rgba(255, 210, 74, 0.14);
+  color: #ffd24a;
+  font-size: 15px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn:hover {
+  background: rgba(255, 210, 74, 0.26);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn.ghost {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.06);
+  color: #dbe2ea;
+}
+
+.progress {
+  margin: 16px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
